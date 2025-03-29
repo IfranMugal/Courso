@@ -23,12 +23,12 @@ function Login() {
           "Content-Type" : "application/json"
         }
       })
-      //console.log(response);
+      console.log(response);
       if(response.data == "No user found" || response.data == "password is incorrect"){
         setError(response.data);
       }else{
         toast.success("login successfull");
-        localStorage.setItem("user",response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
         navigate('/home');
       }
       console.log("server response :",response.data);

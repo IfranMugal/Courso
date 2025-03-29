@@ -36,7 +36,8 @@ function Purchases() {
   const [loading, setLoading] = useState(true);  // ✅ Add loading state
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"))
+    const token = user.token
     if (user) {
       setIsLogin(true);
     } else {
@@ -53,9 +54,10 @@ function Purchases() {
   }, [isLogin, loading]);
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"))
+    const token = user.token
     async function fetchCourses() {
       try {
-        const token = localStorage.getItem('user')
         const response = await axios.get(
           `http://localhost:4001/api/v1/user/purchases`,
           {
@@ -138,7 +140,7 @@ function Purchases() {
             )) : 
             <div className="space-x-2">
               <BsEmojiFrownFill className="text-4xl" />
-              <div className=" text-gray-600 w-80 text-lg font-semibold my-auto mx-auto"> No courses available </div>
+              <div className=" text-gray-600 w-80 text-lg font-semibold my-auto mx-auto"> {isLogin ? 'No courses available' : 'login first'} </div>
             </div>
             }
           </div>

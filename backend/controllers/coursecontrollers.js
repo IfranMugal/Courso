@@ -55,7 +55,6 @@ export async function createCourse(req, res) {
     }
 }
 
-
 export async function updateCourse(req,res){
     const {adminId} = req;
     const {courseId} = req.params;
@@ -176,6 +175,11 @@ export async function courseDetail(req,res){
     }
 } 
 
+import Stripe from 'stripe'
+import { STRIPE_SECRET_KEY } from "../config.js";
+const stripe = new Stripe(STRIPE_SECRET_KEY)
+console.log("stripe : ",STRIPE_SECRET_KEY)
+
 export async function buyCourse(req,res){
     const {userId} = req;
     const {courseId} = req.params;
@@ -196,11 +200,19 @@ export async function buyCourse(req,res){
             )
         }
 
-        const newpurchase = new Purchase({userId,courseId});
-        await newpurchase.save()
+        // Stripe payments begin here
+        const amount = course.price
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: "usd",
+            // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+            payment_method_types :["card"]
+          });
+
         res.json({
             msg : `course buying successfull`,
-            newpurchase
+            course,
+            clientSecret: paymentIntent.client_secret,
         })
 
 

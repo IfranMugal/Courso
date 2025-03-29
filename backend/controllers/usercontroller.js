@@ -87,9 +87,10 @@ export async function userLogin(req,res){
         // limit user functionality accordingly
         res.cookie("jwt",token,cookieOption)
         //console.log("jwt",token);
-        return res.status(201).json(
-            token
-        )
+        return res.status(201).json({
+            token,
+            user
+    })
         
     } catch (e) {
         return res.status(400).json({

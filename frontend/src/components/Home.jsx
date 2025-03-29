@@ -125,7 +125,7 @@ function Home() {
                                     <img className='h-32 w-full object-contain' src={course.image.url}/>
                                 <div className='p-6 text-center'>
                                     <h2 className='text-xl font-bold text-white'>{course.title}</h2>
-                                    <button className='mt-2 px-5 py-2 bg-orange-500 rounded-full hover:bg-blue-500 duration-300'>Enroll</button>
+                                    <button onClick={()=>navigate('/Courses')} className='mt-2 px-5 py-2 bg-orange-500 rounded-full hover:bg-blue-500 duration-300'>Enroll</button>
                                 </div>
                                 </div>
                             </div>

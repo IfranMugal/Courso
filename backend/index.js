@@ -2,9 +2,12 @@ import express from "express";
 import dotenv from "dotenv"
 import mongoose from "mongoose";
 import cors from "cors"
+
 import courseRoute from "./Routes/courseRoute.js"
 import adminRoute from "./Routes/adminRoute.js"
 import userRoute from "./Routes/userRoute.js"
+import orderRoute from "./Routes/orderRoute.js"
+
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from 'cloudinary';
 import cookieParser from "cookie-parser";
@@ -46,6 +49,7 @@ try{
 app.use("/api/v1/course",courseRoute); 
 app.use("/api/v1/user",userRoute);
 app.use("/api/v1/admin",adminRoute);
+app.use("/api/v1/order",orderRoute)
 
 
 app.listen(process.env.PORT || 3000, () => {console.log(`running on ${process.env.PORT}`)});
