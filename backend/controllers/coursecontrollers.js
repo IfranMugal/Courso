@@ -9,25 +9,25 @@ export async function createCourse(req, res) {
     try {
         // Check if files exist before accessing them
         if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).json({ msg: "No file uploaded" });
+            return res.status(400).json({ message: "No file uploaded" });
         }
 
         const { image } = req.files;
         const allowedFormatFile = ["image/png", "image/jpg", "image/jpeg"];
 
         if (!allowedFormatFile.includes(image.mimetype)) {
-            return res.status(400).json({ msg: "Invalid file format" });
+            return res.status(400).json({ message: "Invalid file format" });
         }
 
         // Upload image to Cloudinary
         const cloud_response = await cloudinary.uploader.upload(image.tempFilePath);
         if (!cloud_response || cloud_response.error) {
-            return res.status(400).json({ msg: "Error uploading file to Cloudinary" });
+            return res.status(400).json({ message: "Error uploading file to Cloudinary" });
         }
 
         // Check if all required fields are present
         if (!(title && description && price)) {
-            return res.status(400).json({ msg: "Something wrong with input" });
+            return res.status(400).json({ message: "Something wrong with input" });
         }
 
         const courseData = {
@@ -45,7 +45,7 @@ export async function createCourse(req, res) {
         await Course.create(courseData);
 
         return res.json({
-            msg: "Course created successfully",
+            message: "Course created successfully",
             course: courseData
         });
 
@@ -60,12 +60,17 @@ export async function updateCourse(req,res){
     const {courseId} = req.params;
     const {title,description,price,image} = req.body;
     console.log(courseId);
+    if(!courseId){
+        return res.status(400).json({
+            message : "course to be deleted is not found"
+        })
+    }
 
     try{
         const existingcourse = await Course.findById(courseId);
-        if(!existingcourse){
+        if(existingcourse.creatorId != adminId){
             return res.status(400).json({
-                msg : "Course to be updated not found"
+                message : "its not your course"
             })
         }
 
@@ -84,7 +89,7 @@ export async function updateCourse(req,res){
             }}
         )
         res.json({
-            msg : "course updated successfully"
+            message : "course updated successfully"
         })
 
     }catch(e){
@@ -100,7 +105,7 @@ export async function deleteCourse(req,res){
     const {courseId} = req.params;
     if(!courseId){
         return res.status(400).json({
-            msg : "course to be deleted is not found"
+            message : "course to be deleted is not found"
         })
     }
 
@@ -108,12 +113,12 @@ export async function deleteCourse(req,res){
         const existingcourse = await Course.findById(courseId);
         if(existingcourse.creatorId != adminId){
             return res.status(400).json({
-                msg : "you can only delete your courses and someone elseß"
+                message : "course is not created by you"
             })
         }
         if(!existingcourse){
             return res.status(400).json({
-                msg : "Course to be deleted not found"
+                message : "Course to be deleted not found"
             })
         }
 
@@ -122,7 +127,7 @@ export async function deleteCourse(req,res){
             creatorId: adminId
         });
         return res.status(200).json({
-            msg : "Course deleted successfully"
+            message : "Course deleted successfully"
         })
     }catch(e){
         return res.status(400).json({

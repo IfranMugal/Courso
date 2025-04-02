@@ -4,6 +4,8 @@ import { JWT_ADMIN_SECRETKEY } from "../config.js";
 export function adminMiddleware(req,res,next){
     const authHeaders = req.headers.authorization;
 
+    console.log("inside adminmiddleware ans authHeaders is : ",authHeaders)
+
     if(!authHeaders || !authHeaders.startsWith("Bearer ")){
         return res.status(400).json({
             msg : "Invalid token"

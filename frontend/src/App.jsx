@@ -8,6 +8,13 @@ import Courses from './components/Courses';
 import Purchases from './components/Purchases';
 import Buy from './components/Buy';
 
+import Adminsignup from './admin/adminSignup';
+import Adminlogin from './admin/Adminlogin';
+import Admindashboard from './admin/Admindashboard';
+import Coursecreate from './admin/Coursecreate';
+import Ourcourse from './admin/Ourcourse';
+import Updatecourse from './admin/Updatecourse';
+
 
 function App() {
   return (
@@ -20,6 +27,13 @@ function App() {
         <Route path="/courses" element={<Courses/>}/>
         <Route path="/purchases" element={<Purchases/>}/>
         <Route path="/buy/:courseId" element={<Buy/>}/>
+
+        <Route path="/adminsignup" element={<Adminsignup />}/>
+        <Route path="/adminlogin" element={<Adminlogin />}/>
+        <Route path="/admindashboard" element={<Admindashboard />}/>
+        <Route path="/coursecreate" element={<Coursecreate />}/>
+        <Route path="/ourcourse" element={<Ourcourse />}/>
+        <Route path="/updatecourse/:courseId" element={<Updatecourse />}/>
       </Routes>
       <Toaster />
     </>

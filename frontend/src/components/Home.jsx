@@ -28,7 +28,7 @@ function Home() {
             localStorage.removeItem("user");
             setIslogin(false);
             console.log("response : ",response.data)
-            toast.success(JSON.stringify(response.data));
+            toast.success(JSON.stringify(response.data.message));
         } catch (error) {
             toast.error(error.response.data.errors || "Error in log out")
         }
@@ -79,7 +79,8 @@ function Home() {
     <div className="bg-gradient-to-t from-black to-blue-950">
         <div className='text-white mx-auto pl-30 pr-30'>
             {/* header component */}
-            <header className='flex items-center justify-between p-6'>
+            <header className='flex justify-between p-6 '>
+
                 <div className='flex items-center space-x-2'>
                     <img src={reactLogo} alt="" className='h-10 w-10 rounded-full'></img>
                     <h1 className='text-2xl text-orange-500 font-bold'>C0urs0</h1>
@@ -95,6 +96,7 @@ function Home() {
                     )}
                     
                 </div>
+
             </header>
 
             {/* middle sections */}
@@ -110,7 +112,7 @@ function Home() {
                         My Courses
                         </button>
                     ): (
-                        <button onClick={()=>navigate('https://www.youtube.com/watch?v=ai0MPmFFaOI&t=15917s')} className='bg-green-400 px-6 py-1 border rounded hover:bg-white  duration-300 text-black cursor-pointer'>
+                        <button onClick={()=>alert("no videos are present , as it is a demo web app")} className='bg-green-400 px-6 py-1 border rounded hover:bg-white  duration-300 text-black cursor-pointer'>
                         Courses Videos
                         </button>
                     )}
@@ -146,9 +148,10 @@ function Home() {
                     <div className='flex space-x-1 pl-2'><a href=''><FaFacebook className='hover:text-blue-500 duration-300'/></a><a href=''><FaInstagram className='hover:text-pink-500 duration-300'/></a></div>
                 </div>
                 <div className='text-center'>
-                    <h1 className='pt-1'>Contact us</h1>
-                    <p className='text-sm text-gray-500 pt-2 cursor-pointer hover:text-gray-300 duration-300'>Linkedin - fkdskfvds</p>
-                    <p className='text-sm text-gray-500 cursor-pointer hover:text-gray-300 duration-300'>Github - dmvnds</p>
+                    <h1 className='p-1'>Source code</h1>
+                    
+                    <p className='text-md text-gray-500 '>Github - </p>
+                    <Link to={'https://github.com/IfranMugal/Courso'} className='text-sm text-gray-500 cursor-pointer hover:text-gray-300 duration-300'>Repo link</Link>
                 </div>
                 <div className='text-right'>
                     <h1 className='pt-1'>Copyrights</h1>

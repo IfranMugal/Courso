@@ -87,10 +87,13 @@ export async function adminLogin(req,res){
         // limit user functionality accordingly
         res.cookie("jwt",token,cookieOption)
         
-        console.log("login done")
+        // console.log( "Login successfull",
+        // admin,
+        // token)
         return res.json({
-            msg : "Login successfull",
-            admin: admin
+            message : "Login successfull",
+            admin,
+            token
         })
         
         
@@ -116,9 +119,11 @@ export async function adminLogout(req, res) {
         res.clearCookie("jwt");
 
         return res.json({
-            msg: "Logout successful and token removed from cookie"
+            message: "Admin Logout successful"
         });
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
 }
+
+

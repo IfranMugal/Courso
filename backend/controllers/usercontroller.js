@@ -61,15 +61,15 @@ export async function userLogin(req,res){
     try {
         const user = await User.findOne({email : email})
         if(!user){
-            return res.status(201).json(
-                "No user found"
-            )
+            return res.status(400).json({
+                msg : "No user found"
+            })
         }
         const ispasscorrect = await bcrypt.compare(password,user.password);
         if(!ispasscorrect){
-            return res.status(201).json(
-                "password is incorrect"
-            )
+            return res.status(400).json({
+                msg : "password is incorrect"
+            })
         }
 
         // jwt code
@@ -80,17 +80,22 @@ export async function userLogin(req,res){
             expires : new Date(Date.now() + 24*60*60*1000), // expires in 1 day
             httpOnly : true, // can't be accessed via javascript directly
             secure : process.env.NODE_ENV === "production", // true only for https
-            sameSite : "None" // protects from CSRF attack
+            sameSite : "Strict" // protects from CSRF attack
         }
 
         // stroring token in the cookie section so that we can easily access it fron any endpoint and 
         // limit user functionality accordingly
         res.cookie("jwt",token,cookieOption)
-        //console.log("jwt",token);
-        return res.status(201).json({
-            token,
-            user
-    })
+        
+        // console.log( "Login successfull",
+        // admin,
+        // token)
+        return res.json({
+            message : "Login successfull",
+            user,
+            token
+        })
+        
         
     } catch (e) {
         return res.status(400).json({
@@ -100,21 +105,27 @@ export async function userLogin(req,res){
 }
 
 export async function userLogout(req, res) {
-    console.log("All Cookies:", req.cookies); // ✅ Log all cookies received
 
-    if (!req.cookies.jwt) {
-        return res.json({ msg: "Already logged out" });
+    try {
+        // Check if JWT cookie exists
+        console.log("the value of req.cookies.jwt is : ",req.cookies.jwt)
+        if (!req.cookies.jwt) {
+            return res.json({
+                msg: "Already logged out"
+            });
+        }
+
+        console.log("JWT before clearing:", req.cookies.jwt); // Log the existing JWT
+
+        // Clear the cookie
+        res.clearCookie("jwt");
+
+        return res.json({
+            message: "Logout successfull"
+        });
+    } catch (e) {
+        res.status(400).json({ error: e.message });
     }
-
-    console.log("JWT before clearing:", req.cookies.jwt);
-
-    res.clearCookie("jwt", {
-        httpOnly: true,
-        secure: false, // ✅ Must match original settings
-        sameSite: "None"
-    });
-
-    return res.json({ msg: "Logout successful and token removed from cookie" });
 }
 
 export async function userPurchases(req,res){
